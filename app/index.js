@@ -13,6 +13,9 @@ const app = new Koa();
 mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true }, () => console.log("MongoDB 数据库已连接"));
 mongoose.connection.on("error", console.error);
 
+// 静态文件管理
+app.use(koastatic(path.join(__dirname, "public")));
+
 // 自定义错误捕获，写在所有中间件的前面即可捕获所有中间件错误（除了 404）
 // 自定义错误捕获功能有限，所有一般使用 koa-json-error 中间件处理错误
 // app.use(async (ctx, next) => {
@@ -25,9 +28,6 @@ mongoose.connection.on("error", console.error);
 //     };
 //   }
 // });
-
-// 静态文件管理
-app.use(koastatic(path.join(__dirname, "public")));
 
 app.use(
   // 配置如果是生产环境就不显示堆栈信息
